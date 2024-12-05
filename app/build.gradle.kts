@@ -65,6 +65,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))  // BOM for Compose in testing
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.4.0")
+
 
     // Debugging Tools for Compose
     debugImplementation(libs.androidx.ui.tooling)

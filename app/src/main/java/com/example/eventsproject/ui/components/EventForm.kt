@@ -61,8 +61,15 @@ fun EventForm(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Title of the Form (Editing or Creating)
+        Text(
+            text = if (event == null) "Create New Event" else "Edit Event",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
         // Title Field
         OutlinedTextField(
             value = title,
@@ -181,17 +188,20 @@ fun EventForm(
                         println("Please fill in all required fields.")
                     }
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text("Save")
             }
             OutlinedButton(
                 onClick = onCancel,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text("Cancel")
             }
         }
     }
 }
+
 

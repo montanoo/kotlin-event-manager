@@ -18,8 +18,10 @@ import com.example.eventsproject.ui.screens.*
 import com.example.eventsproject.ui.theme.EventsProjectTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             EventsProjectTheme {
                 Surface(
