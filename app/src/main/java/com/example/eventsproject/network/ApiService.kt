@@ -2,7 +2,6 @@ package com.example.eventsproject.network
 
 import com.example.eventsproject.types.Comment
 import com.example.eventsproject.types.Event
-import com.example.eventsproject.ui.screens.EventRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -48,6 +47,17 @@ data class AddCommentRequest(
     val eventId: Int
 )
 
+data class EventRequest(
+    val id: Int,
+    val title: String,
+    val description: String,
+    val date: String,
+    val location: String,
+    val time: String,
+    val price: Double,
+    val stock: Int
+)
+
 
 interface ApiService {
     @POST("user/login")
@@ -65,9 +75,6 @@ interface ApiService {
     @GET("event/{id}")
     suspend fun getEventById(@Path("id") id: Int): Response<Event>
 
-    @PUT("event/{id}")
-    suspend fun updateEvent(@Path("id") id: Int, @Body eventRequest: EventRequest): Response<Unit>
-
     @POST("attendance/create")
     suspend fun confirmAttendance(@Body confirmAttendanceRequest: ConfirmAttendanceRequest): Response<AttendanceResponse>
 
@@ -76,4 +83,10 @@ interface ApiService {
 
     @POST("comments/create")
     suspend fun addComment(@Body request: AddCommentRequest): Response<Comment>
+
+    @POST("event/update")
+    suspend fun updateEvent(@Body event: EventRequest): Response<Unit>
+
+    @POST("event/create")
+    suspend fun createEvent(@Body eventRequest: EventRequest): Response<Unit>
 }

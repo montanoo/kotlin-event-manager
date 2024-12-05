@@ -1,5 +1,6 @@
 package com.example.eventsproject.ui.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun EventCard(event: Event, isEditable: Boolean, navController: NavController, isAttendingInitially: Boolean = false) {
     var showConfirmationModal by remember { mutableStateOf(false) } // State for modal visibility
@@ -99,7 +101,17 @@ fun EventCard(event: Event, isEditable: Boolean, navController: NavController, i
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                if (event.stock > 0 && !isAttending) {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+
+                val eventDate: Date? = try {
+                    dateFormat.parse(event.date)
+                } catch (e: Exception) {
+                    null
+                }
+                if (eventDate != null) {
+
+
+                if (event.stock > 0 && !isAttending && eventDate > Date()) {
                     Button(
                         onClick = { showConfirmationModal = true },
                         modifier = Modifier.weight(1f),
@@ -108,36 +120,51 @@ fun EventCard(event: Event, isEditable: Boolean, navController: NavController, i
                             contentColor = Color.White
                         ),
                     ) {
-                        Text("Confirm assistance")
+                        Text("Confirm")
                     }
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                if (isAttending) {
-                    Button(
-                        onClick = { /* Handle action for attending */ },
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF4CAF50), // Green color for "You will attend!"
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Text("You will attend!")
+                    if (isAttending && eventDate > Date()) {
+                        Button(
+                            onClick = { /* Handle action for attending */ },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4CAF50), // Green color for "You will attend!"
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text("Registered")
+                        }
+                    }
+                    if (isAttending && eventDate < Date()) {
+                        Button(
+                            onClick = { /* Handle action for attending */ },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4CAF50), // Green color for "You will attend!"
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text("Attended")
+                        }
                     }
                 }
 
 
-//                if (isEditable) {
-//                    Button(
-//                        onClick = { navController.navigate("edit_event_screen/${event.id}") },
-//                        modifier = Modifier.weight(1f),
-//                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3B5998)),
-//                        enabled = event.stock > 0
-//                    ) {
-//                        Text("Edit", color = Color.White)
-//                    }
-//                }
+
+
+                if (isEditable) {
+                    Button(
+                        onClick = { navController.navigate("edit_event_screen/${event.id}") },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3B5998)),
+                        enabled = event.stock > 0
+                    ) {
+                        Text("Edit", color = Color.White)
+                    }
+                }
             }
         }
     }

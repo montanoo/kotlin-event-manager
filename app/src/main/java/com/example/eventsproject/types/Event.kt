@@ -7,10 +7,10 @@ data class Event(
     val date: String,
     val time: String,
     val location: String,
-    val price: Float,
+    val price: Double,
     val stock: Int,
     val organizerId: Int,
-    val organizer: Organizer,
+    val organizer: Organizer?,
     val isAttendee: Boolean,
     val comments: List<Comment>?
 )
