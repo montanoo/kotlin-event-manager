@@ -2,6 +2,7 @@ package com.example.eventsproject.network
 
 import com.example.eventsproject.types.Comment
 import com.example.eventsproject.types.Event
+import com.example.eventsproject.types.Rating
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -58,6 +59,19 @@ data class EventRequest(
     val stock: Int
 )
 
+data class RatingsRequest(
+    val eventId: Int,
+    val rating: Int,
+)
+
+data class RatingResponse(
+    val id: Int,
+    val rating: Int,
+    val comment: String?,
+    val date: String,
+    val userId: Int,
+    val eventId: Int
+)
 
 interface ApiService {
     @POST("user/login")
@@ -89,4 +103,7 @@ interface ApiService {
 
     @POST("event/create")
     suspend fun createEvent(@Body eventRequest: EventRequest): Response<Unit>
+
+    @POST("ratings/create")
+    suspend fun submitRating(@Body ratingsRequest: RatingsRequest): Response<Rating>
 }

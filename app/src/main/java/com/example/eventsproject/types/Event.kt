@@ -11,8 +11,18 @@ data class Event(
     val stock: Int,
     val organizerId: Int,
     val organizer: Organizer?,
+    val ratings: List<Rating>?,
     val isAttendee: Boolean,
-    val comments: List<Comment>?
+    val comments: List<Comment>?,
+)
+
+data class Rating(
+    val id: Int,
+    val rating: Int,
+    val comment: String?,
+    val date: String,
+    val userId: Int,
+    val eventId: Int
 )
 
 data class Organizer(

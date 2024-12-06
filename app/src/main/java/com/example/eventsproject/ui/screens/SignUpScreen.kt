@@ -38,7 +38,7 @@ import retrofit2.Response
 @Composable
 fun SignUpScreen(navController: NavController, context: Context = LocalContext.current) {
 
-    RetrofitClient.initialize(context)
+    RetrofitClient.initialize(context, navController)
     val loginResponseJson = PreferenceManager.getLoginResponse(context)
 
     LaunchedEffect(loginResponseJson) {

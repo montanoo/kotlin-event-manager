@@ -55,6 +55,7 @@ fun ComingSoonScreen(
         coroutineScope.launch {
             try {
                 val response = RetrofitClient.apiService.getComingSoonEvents()
+                println(response)
                 if (response.isSuccessful) {
                     events = response.body() ?: emptyList()
                 }

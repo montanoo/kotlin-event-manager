@@ -22,4 +22,9 @@ object PreferenceManager {
     fun clearLoginResponse(context: Context) {
         getPreferences(context).edit().remove(KEY_LOGIN_RESPONSE).apply()
     }
+
+    fun clearLoginData(context: Context) {
+        val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        prefs.edit().remove(KEY_LOGIN_RESPONSE).apply()
+    }
 }

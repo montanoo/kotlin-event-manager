@@ -20,7 +20,7 @@ import com.example.eventsproject.network.RetrofitClient
 
 @Composable
 fun EventsScreen(navController: NavController, context: Context = LocalContext.current) {
-    RetrofitClient.initialize(context)
+    RetrofitClient.initialize(context, navController)
 
     // Estados
     var activeTab by remember { mutableStateOf(EventsTab.ComingSoon) }
