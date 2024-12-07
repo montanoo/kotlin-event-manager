@@ -10,3 +10,8 @@ Integrantes:
 - Fernando Josué Montano González MG210111
 - Bryan Josué Alberto Elena AE210567
 
+## ⛓️‍💥 Enlaces importantes
+- Trello: https://trello.com/b/fch1IS3q/aplicacion-de-gestion-de-eventos-comunitarios
+- Defensa: https://drive.google.com/file/d/1h50Tg4Xpu5qv5C422CAGKhc9CijzWV6I/view?usp=sharing
+- PDF:
+- Mockups: https://www.figma.com/proto/wtJSxYkDIeKmmeCVuPGQZD/Untitled?node-id=3-2&node-type=canvas&t=C1R0hIhqCpPIMXB2-0&scaling=contain&content-scaling=fixed&page-id=0%3A1
