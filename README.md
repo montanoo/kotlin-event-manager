@@ -8,6 +8,7 @@ Docente: Ing. Alexander Alberto Sigüenza Campos
 Integrantes:
 
 - Fernando Josué Montano González MG210111
+- Alexandra María Henríquez Miranda HM232507
 - Bryan Josué Alberto Elena AE210567
 - David Gerardo Menjívar Ramírez MR210455
 - Jairo Rafael Colocho Díaz CD210488
