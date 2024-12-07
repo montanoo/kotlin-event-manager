@@ -2,6 +2,7 @@ package com.example.eventsproject.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,8 +29,11 @@ import com.example.eventsproject.types.Comment
 import com.example.eventsproject.types.Event
 import com.example.eventsproject.network.AddCommentRequest
 import com.example.eventsproject.network.RetrofitClient
+import com.example.eventsproject.types.Rating
+import com.example.eventsproject.ui.components.DisplayStars
 import com.example.eventsproject.ui.components.formatDate
 import com.example.eventsproject.ui.components.formatTime
+import com.example.eventsproject.ui.components.submitRating
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +43,15 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
     var comments by remember { mutableStateOf<List<Comment>>(emptyList()) }
     var newComment by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(true) }
+    var userRating by remember { mutableStateOf(0) } // State for user's new rating
+    var ratings by remember { mutableStateOf(emptyList<Rating>()) } // State for event ratings
+    var showRatingModal by remember { mutableStateOf(false) } // State for rating modal
+
+    // Calculate average rating
+    val averageRating = remember(ratings) {
+        if (ratings.isNotEmpty()) ratings.map { it.rating }.average().toFloat() else 0f
+    }
+
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(eventId) {
@@ -46,6 +61,7 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
                 if (response.isSuccessful) {
                     event = response.body()
                     comments = event?.comments ?: emptyList()
+                    ratings = event?.ratings ?: emptyList() // Initialize ratings
                 } else {
                     println("Failed to fetch event details: ${response.errorBody()?.string()}")
                 }
@@ -80,7 +96,7 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
                         .fillMaxSize()
                         .padding(paddingValues)
                 ) {
-                    // Event Background
+                    // Event Background and Title
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -127,6 +143,33 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
                             text = "Location: ${event.location}",
                             style = MaterialTheme.typography.bodySmall
                         )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Average Rating Section
+                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Text(
+                            text = "Average Rating:",
+                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            DisplayStars(rating = averageRating)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = String.format("%.1f", averageRating),
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Button to Open Rating Modal
+                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Button(onClick = { showRatingModal = true }) {
+                            Text("Rate Event")
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -215,7 +258,7 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
                                 Spacer(modifier = Modifier.height(8.dp))
 
                                 // Dotted Line Divider
-                                HorizontalDivider(
+                                Divider(
                                     modifier = Modifier.fillMaxWidth(),
                                     thickness = 1.dp,
                                     color = Color.LightGray
@@ -225,7 +268,51 @@ fun EventDetailsScreen(navController: NavController, eventId: Int) {
                     }
                 }
             }
+
+            // Rating Modal
+            if (showRatingModal) {
+                AlertDialog(
+                    onDismissRequest = { showRatingModal = false },
+                    confirmButton = {
+                        Button(onClick = {
+                            showRatingModal = false
+                            coroutineScope.launch {
+                                val newRating = submitRating(eventId, userRating)
+                                if (newRating != null) {
+                                    ratings = ratings + newRating // Add new rating to the list
+                                }
+                            }
+                        }) {
+                            Text("Submit")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = { showRatingModal = false }) {
+                            Text("Cancel")
+                        }
+                    },
+                    title = { Text("Rate Event") },
+                    text = {
+                        Column {
+                            Text("Rate this event from 1 to 5 stars:")
+                            Row {
+                                for (i in 1..5) {
+                                    Icon(
+                                        imageVector = if (i <= userRating) Icons.Filled.Star else Icons.Outlined.Star,
+                                        contentDescription = "Star $i",
+                                        modifier = Modifier
+                                            .size(32.dp)
+                                            .clickable { userRating = i },
+                                        tint = if (i <= userRating) Color(0xFFFFA726) else Color.Gray
+                                    )
+                                }
+                            }
+                        }
+                    }
+                )
+            }
         }
     }
 }
+
 

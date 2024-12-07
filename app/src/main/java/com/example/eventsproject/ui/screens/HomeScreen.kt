@@ -9,13 +9,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -24,6 +21,8 @@ import com.example.eventsproject.ui.screens.AddEventScreen
 import com.example.eventsproject.ui.screens.EditEventScreen
 import com.example.eventsproject.ui.screens.EventDetailsScreen
 import com.example.eventsproject.ui.screens.EventsScreen
+import com.example.eventsproject.ui.screens.LoginScreen
+import com.example.eventsproject.ui.screens.SignUpScreen
 import com.example.eventsproject.ui.screens.UserInfoScreen
 
 @Composable
@@ -35,7 +34,11 @@ fun HomeScreen() {
     val currentRoute = currentBackStackEntry?.destination?.route
 
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController) },
+        bottomBar = {
+            if (currentRoute != "login_screen" && currentRoute != "sign_up_screen") {
+                BottomNavigationBar(navController)
+            }
+        },
         floatingActionButton = {
             // Show FAB only on "home_screen"
             if (currentRoute == "home_screen") {
@@ -62,16 +65,24 @@ fun HomeScreen() {
             composable(
                 route = "home_screen",
                 enterTransition = {
-                    slideInVertically (initialOffsetY = { 1000 }, animationSpec = tween(500))
+                    slideInVertically(initialOffsetY = { 1000 }, animationSpec = tween(500))
                 },
                 exitTransition = {
-                    slideOutVertically (targetOffsetY = { -1000 }, animationSpec = tween(500))
+                    slideOutVertically(targetOffsetY = { -1000 }, animationSpec = tween(500))
                 }
             ) {
                 EventsScreen(navController)
             }
-            composable("user_screen") {
-                UserInfoScreen()
+            composable(
+                route = "user_screen",
+                enterTransition = {
+                    slideInVertically(initialOffsetY = { -1000 }, animationSpec = tween(500))
+                },
+                exitTransition = {
+                    slideOutVertically(targetOffsetY = { 1000 }, animationSpec = tween(500))
+                }
+            ) {
+                UserInfoScreen(navController)
             }
             composable("event_details_screen/{eventId}") { backStackEntry ->
                 val eventId = backStackEntry.arguments?.getString("eventId")?.toIntOrNull()
@@ -86,6 +97,21 @@ fun HomeScreen() {
                 }
             }
             composable("add_event") { AddEventScreen(navController) }
+            composable(
+                "login_screen",
+                enterTransition = { slideInVertically(initialOffsetY = { 2000 }, animationSpec = tween(durationMillis = 500)) },
+                exitTransition = { slideOutVertically(targetOffsetY = { -2000 }, animationSpec = tween(durationMillis = 500)) }
+            ) {
+                LoginScreen(navController = navController)
+            }
+            composable(
+                "sign_up_screen",
+                enterTransition = { slideInVertically(initialOffsetY = { -2000 }, animationSpec = tween(durationMillis = 500)) },
+                exitTransition = { slideOutVertically(targetOffsetY = { 2000 }, animationSpec = tween(durationMillis = 500)) }
+            ) {
+                SignUpScreen(navController = navController)
+            }
         }
+
     }
 }

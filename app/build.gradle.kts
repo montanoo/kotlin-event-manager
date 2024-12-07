@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))  // BOM for Compose in testing
     androidTestImplementation(libs.androidx.ui.test.junit4)
     implementation("androidx.compose.ui:ui-text-google-fonts:1.4.0")
+    implementation("com.google.android.gms:play-services-auth:20.5.0")
 
 
     // Debugging Tools for Compose

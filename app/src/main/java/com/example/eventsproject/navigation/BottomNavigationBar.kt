@@ -9,7 +9,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     NavigationBar {
-        val items = listOf(BottomNavItem.Events, BottomNavItem.User)
+        val items = listOf(BottomNavItem.Events, BottomNavItem.User) // Add User tab
         val currentBackStackEntry = navController.currentBackStackEntryAsState()
         val currentRoute = currentBackStackEntry.value?.destination?.route
 
@@ -33,4 +33,5 @@ fun BottomNavigationBar(navController: NavController) {
         }
     }
 }
+
 

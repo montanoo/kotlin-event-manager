@@ -73,6 +73,15 @@ data class RatingResponse(
     val eventId: Int
 )
 
+data class GoogleTokenRequest(
+    val idToken: String
+)
+
+data class GoogleTokenResponse(
+    val user: User,
+    val token: String
+)
+
 interface ApiService {
     @POST("user/login")
     suspend fun loginUser(@Body loginRequest: LoginRequest): Response<LoginResponse>
@@ -106,4 +115,7 @@ interface ApiService {
 
     @POST("ratings/create")
     suspend fun submitRating(@Body ratingsRequest: RatingsRequest): Response<Rating>
+
+    @POST("user/auth/google")
+    suspend fun verifyGoogleToken(@Body request: GoogleTokenRequest): Response<LoginResponse>
 }

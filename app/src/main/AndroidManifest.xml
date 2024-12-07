@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +16,8 @@
         android:theme="@style/Theme.EventsProject"
         tools:targetApi="31"
         android:networkSecurityConfig="@xml/network_security_config">
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,12 +25,29 @@
             android:theme="@style/Theme.EventsProject">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Google Sign-In Redirect -->
+        <activity
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:exported="false"
+            tools:ignore="AppLinkUrlError">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="com.example.eventsproject"
+                    android:host="google" />
+            </intent-filter>
+        </activity>
+
+        <!-- Google Sign-In Metadata -->
+        <meta-data
+            android:name="com.google.android.gms.client_id"
+            android:value="788085540899-dc7gkjfjpq10r1pdfpbvsnun9lidlnou.apps.googleusercontent.com" />
+
     </application>
-
-
-
 </manifest>
