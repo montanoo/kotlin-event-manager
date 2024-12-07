@@ -9,7 +9,8 @@ Integrantes:
 
 - Fernando Josué Montano González MG210111
 - Bryan Josué Alberto Elena AE210567
-- -David Gerardo Menjívar Ramírez MR210455
+- David Gerardo Menjívar Ramírez MR210455
+- Jairo Rafael Colocho Díaz CD210488
 
 ## ⛓️‍💥 Enlaces importantes
 - Trello: https://trello.com/b/fch1IS3q/aplicacion-de-gestion-de-eventos-comunitarios
